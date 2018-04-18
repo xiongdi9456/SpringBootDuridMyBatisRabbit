@@ -1,3 +1,2 @@
 # SpringBootDuridMyBatisRabbit
-SpringBootDuridMyBatisRabbit
-aaaaaaaaa
+SpringBootDuridMyBatisRabbitMQ
