@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.morningtec.sheldonrabbit.mapper.base.UserBaseMapper">
+
+
+    <insert id="insertUser"  useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `user`
+        (
+        <trim suffixOverrides=",">
+                    <if test="deviceId!=null">
+                        `device_id`,
+                    </if>
+                    <if test="os!=null">
+                        `os`,
+                    </if>
+                    <if test="flag!=null">
+                        `flag`,
+                    </if>
+                    <if test="migratePass!=null">
+                        `migrate_pass`,
+                    </if>
+                    <if test="userId!=null">
+                        `user_id`,
+                    </if>
+                    <if test="createTime!=null">
+                        `create_time`,
+                    </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+                <if test="deviceId!=null">
+                    #{deviceId},
+                </if>
+                <if test="os!=null">
+                    #{os},
+                </if>
+                <if test="flag!=null">
+                    #{flag},
+                </if>
+                <if test="migratePass!=null">
+                    #{migratePass},
+                </if>
+                <if test="userId!=null">
+                    #{userId},
+                </if>
+                <if test="createTime!=null">
+                    #{createTime},
+                </if>
+        </trim>
+        )
+    </insert>
+
+
+
+
+    <update id="updateUser">
+        UPDATE `user`
+        SET
+        <trim suffixOverrides=",">
+            <if test="deviceId != null and deviceId!=''">
+                `device_id` = #{deviceId},
+            </if>
+            <if test="os != null">
+                `os` = #{os},
+            </if>
+            <if test="flag != null">
+                `flag` = #{flag},
+            </if>
+            <if test="migratePass != null and migratePass!=''">
+                `migrate_pass` = #{migratePass},
+            </if>
+            <if test="userId != null and userId!=''">
+                `user_id` = #{userId},
+            </if>
+            <if test="createTime != null and createTime!=''">
+                `create_time` = #{createTime},
+            </if>
+        </trim>
+        WHERE
+        <trim suffixOverrides="and">
+                `id` = #{id} and
+        </trim>
+    </update>
+
+
+
+    <resultMap type="com.morningtec.sheldonrabbit.entity.User" id="UserMap">
+        <result property="id" column="id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="os" column="os"/>
+        <result property="flag" column="flag"/>
+        <result property="migratePass" column="migrate_pass"/>
+        <result property="userId" column="user_id"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+
+    <select id="queryUser" resultMap="UserMap">
+        select
+        <include refid="baseResult"></include>
+        from  `user`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="id != null">
+                `id` = #{id} and
+            </if>
+            <if test="deviceId != null and deviceId!=''">
+                `device_id` = #{deviceId} and
+            </if>
+            <if test="os != null">
+                `os` = #{os} and
+            </if>
+            <if test="flag != null">
+                `flag` = #{flag} and
+            </if>
+            <if test="migratePass != null and migratePass!=''">
+                `migrate_pass` = #{migratePass} and
+            </if>
+            <if test="userId != null and userId!=''">
+                `user_id` = #{userId} and
+            </if>
+            <if test="createTime != null and createTime!=''">
+                `create_time` = #{createTime} and
+            </if>
+            <if test = "(_parameter instanceof com.morningtec.sheldonrabbit.entity.User$QueryBuilder) == true">
+                <if test="idList != null">
+                    `id` in
+                    <foreach collection="idList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="idSt !=null">
+                    `id` >= #{idSt} and
+                </if>
+                <if test="idEd!=null">
+                    `id` &lt;= #{idEd} and
+                </if>
+                <if test="deviceIdList != null">
+                    `device_id` in
+                    <foreach collection="deviceIdList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyDeviceId!=null and fuzzyDeviceId.size()>0">
+                    (
+                    <foreach collection="fuzzyDeviceId"  separator="or" item="item">
+                        `Device_id` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyDeviceId!=null and rightFuzzyDeviceId.size()>0">
+                    (
+                    <foreach collection="rightFuzzyDeviceId"  separator="or" item="item">
+                        `Device_id` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="osList != null">
+                    `os` in
+                    <foreach collection="osList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="osSt !=null">
+                    `os` >= #{osSt} and
+                </if>
+                <if test="osEd!=null">
+                    `os` &lt;= #{osEd} and
+                </if>
+                <if test="flagList != null">
+                    `flag` in
+                    <foreach collection="flagList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test="flagSt !=null">
+                    `flag` >= #{flagSt} and
+                </if>
+                <if test="flagEd!=null">
+                    `flag` &lt;= #{flagEd} and
+                </if>
+                <if test="migratePassList != null">
+                    `migrate_pass` in
+                    <foreach collection="migratePassList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyMigratePass!=null and fuzzyMigratePass.size()>0">
+                    (
+                    <foreach collection="fuzzyMigratePass"  separator="or" item="item">
+                        `Migrate_pass` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyMigratePass!=null and rightFuzzyMigratePass.size()>0">
+                    (
+                    <foreach collection="rightFuzzyMigratePass"  separator="or" item="item">
+                        `Migrate_pass` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="userIdList != null">
+                    `user_id` in
+                    <foreach collection="userIdList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyUserId!=null and fuzzyUserId.size()>0">
+                    (
+                    <foreach collection="fuzzyUserId"  separator="or" item="item">
+                        `User_id` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyUserId!=null and rightFuzzyUserId.size()>0">
+                    (
+                    <foreach collection="rightFuzzyUserId"  separator="or" item="item">
+                        `User_id` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test="createTimeList != null">
+                    `create_time` in
+                    <foreach collection="createTimeList" close=")" open="(" separator="," item="item">
+                        #{item}
+                    </foreach> and
+                </if>
+                <if test ="fuzzyCreateTime!=null and fuzzyCreateTime.size()>0">
+                    (
+                    <foreach collection="fuzzyCreateTime"  separator="or" item="item">
+                        `Create_time` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyCreateTime!=null and rightFuzzyCreateTime.size()>0">
+                    (
+                    <foreach collection="rightFuzzyCreateTime"  separator="or" item="item">
+                        `Create_time` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+            </if>
+        </trim>
+    </select>
+
+    <select id="queryUserLimit1" resultMap="UserMap">
+        select
+        <include refid="baseResult"></include>
+        from  `user`
+        <trim prefix="where" suffixOverrides="and | or">
+            <if test="id != null">
+                `id` = #{id} and
+            </if>
+            <if test="deviceId != null and deviceId!=''">
+                `device_id` = #{deviceId} and
+            </if>
+            <if test="os != null">
+                `os` = #{os} and
+            </if>
+            <if test="flag != null">
+                `flag` = #{flag} and
+            </if>
+            <if test="migratePass != null and migratePass!=''">
+                `migrate_pass` = #{migratePass} and
+            </if>
+            <if test="userId != null and userId!=''">
+                `user_id` = #{userId} and
+            </if>
+            <if test="createTime != null and createTime!=''">
+                `create_time` = #{createTime} and
+            </if>
+            <if test = "(_parameter instanceof com.morningtec.sheldonrabbit.entity.User$QueryBuilder) == true">
+                    <if test="idList != null">
+                        `id` in
+                        <foreach collection="idList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="idSt !=null">
+                    `id` >= #{idSt} and
+                </if>
+                <if test="idEd!=null">
+                    `id` &lt;= #{idEd} and
+                </if>
+                    <if test="deviceIdList != null">
+                        `device_id` in
+                        <foreach collection="deviceIdList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyDeviceId!=null and fuzzyDeviceId.size()>0">
+                    (
+                    <foreach collection="fuzzyDeviceId"  separator="or" item="item">
+                        `Device_id` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyDeviceId!=null and rightFuzzyDeviceId.size()>0">
+                    (
+                    <foreach collection="rightFuzzyDeviceId"  separator="or" item="item">
+                        `Device_id` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="osList != null">
+                        `os` in
+                        <foreach collection="osList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="osSt !=null">
+                    `os` >= #{osSt} and
+                </if>
+                <if test="osEd!=null">
+                    `os` &lt;= #{osEd} and
+                </if>
+                    <if test="flagList != null">
+                        `flag` in
+                        <foreach collection="flagList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test="flagSt !=null">
+                    `flag` >= #{flagSt} and
+                </if>
+                <if test="flagEd!=null">
+                    `flag` &lt;= #{flagEd} and
+                </if>
+                    <if test="migratePassList != null">
+                        `migrate_pass` in
+                        <foreach collection="migratePassList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyMigratePass!=null and fuzzyMigratePass.size()>0">
+                    (
+                    <foreach collection="fuzzyMigratePass"  separator="or" item="item">
+                        `Migrate_pass` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyMigratePass!=null and rightFuzzyMigratePass.size()>0">
+                    (
+                    <foreach collection="rightFuzzyMigratePass"  separator="or" item="item">
+                        `Migrate_pass` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="userIdList != null">
+                        `user_id` in
+                        <foreach collection="userIdList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyUserId!=null and fuzzyUserId.size()>0">
+                    (
+                    <foreach collection="fuzzyUserId"  separator="or" item="item">
+                        `User_id` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyUserId!=null and rightFuzzyUserId.size()>0">
+                    (
+                    <foreach collection="rightFuzzyUserId"  separator="or" item="item">
+                        `User_id` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                    <if test="createTimeList != null">
+                        `create_time` in
+                        <foreach collection="createTimeList" close=")" open="(" separator="," item="item">
+                            #{item}
+                        </foreach> and
+                    </if>
+                <if test ="fuzzyCreateTime!=null and fuzzyCreateTime.size()>0">
+                    (
+                    <foreach collection="fuzzyCreateTime"  separator="or" item="item">
+                        `Create_time` like concat('%',#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+                <if test ="rightFuzzyCreateTime!=null and rightFuzzyCreateTime.size()>0">
+                    (
+                    <foreach collection="rightFuzzyCreateTime"  separator="or" item="item">
+                        `Create_time` like concat(#{item},'%')
+                    </foreach>
+                    ) and
+                </if>
+            </if>
+        </trim>
+        limit 1
+    </select>
+
+    <sql id="allResult">
+        <trim suffixOverrides=",">
+        `id`,
+        `device_id`,
+        `os`,
+        `flag`,
+        `migrate_pass`,
+        `user_id`,
+        `create_time`,
+        </trim>
+    </sql>
+
+
+
+    <sql id="baseResult">
+        <trim suffixOverrides=",">
+            <if test = "(_parameter instanceof com.morningtec.sheldonrabbit.entity.User$QueryBuilder) == true">
+
+                <if test="fetchFields==null">
+                    <include refid="allResult"></include>
+                </if>
+                <if test="fetchFields!=null">
+                    <if test="fetchFields.AllFields !=null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields ==null and fetchFields.fetchFields==null and fetchFields.excludeFields==null and fetchFields.otherFields==null">
+                        <include refid="allResult"></include>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.fetchFields!=null">
+                    <if test="fetchFields.fetchFields.id==true">
+                        `id`,
+                    </if>
+                    <if test="fetchFields.fetchFields.deviceId==true">
+                        `device_id`,
+                    </if>
+                    <if test="fetchFields.fetchFields.os==true">
+                        `os`,
+                    </if>
+                    <if test="fetchFields.fetchFields.flag==true">
+                        `flag`,
+                    </if>
+                    <if test="fetchFields.fetchFields.migratePass==true">
+                        `migrate_pass`,
+                    </if>
+                    <if test="fetchFields.fetchFields.userId==true">
+                        `user_id`,
+                    </if>
+                    <if test="fetchFields.fetchFields.createTime==true">
+                        `create_time`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.AllFields==null and fetchFields.excludeFields!=null">
+                    <if test="fetchFields.excludeFields.id==null">
+                        `id`,
+                    </if>
+                    <if test="fetchFields.excludeFields.deviceId==null">
+                        `device_id`,
+                    </if>
+                    <if test="fetchFields.excludeFields.os==null">
+                        `os`,
+                    </if>
+                    <if test="fetchFields.excludeFields.flag==null">
+                        `flag`,
+                    </if>
+                    <if test="fetchFields.excludeFields.migratePass==null">
+                        `migrate_pass`,
+                    </if>
+                    <if test="fetchFields.excludeFields.userId==null">
+                        `user_id`,
+                    </if>
+                    <if test="fetchFields.excludeFields.createTime==null">
+                        `create_time`,
+                    </if>
+                    </if>
+                    <if test="fetchFields.otherFields!=null and fetchFields.otherFields.size>0">
+                        <foreach collection="fetchFields.otherFields" index="index" item="item" separator=",">
+                        `#{item}`
+                        </foreach>
+                    </if>
+                </if>
+            </if>
+            <if test="(_parameter instanceof com.morningtec.sheldonrabbit.entity.User$QueryBuilder) == false" >
+                <include refid="allResult"></include>
+            </if>
+
+        </trim>
+    </sql>
+
+
+</mapper>
